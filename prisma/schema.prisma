@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator db {
+  provider = "prisma-client-js"
+  output   = "./node_modules/.prisma/client"
+}
+
+generator seed {
+  provider = "prisma-client-js"
+  output   = "./prisma/seed.ts"
+}
+
+model City {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  distance Int
+}
+
+model Vehicle {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  type  String
+  range Int
+  count Int
+}
+
+model Cop {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  cityId   String  // Storing City ID manually (MongoDB does not support relations)
+  vehicleId String // Storing Vehicle ID manually
+}
+
+model Fugitive {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  cityId  String // Storing City ID manually
+}
+
