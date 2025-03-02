@@ -12,6 +12,7 @@ interface City {
   id: string;
   name: string;
   imageUrl: string;
+  distance: number; // Added distance property
 }
 
 export default function CitySelectionList() {
@@ -30,6 +31,7 @@ export default function CitySelectionList() {
           data.cities.map((city: any) => ({
             id: city.id,
             name: city.name,
+            distance: city.distance, // Fetch distance from API
             imageUrl: `/cities/${city.name.toLowerCase().replace(/\s+/g, "-")}.png`,
           }))
         );
@@ -100,6 +102,11 @@ export default function CitySelectionList() {
                     {city.name}
                   </CardItem>
 
+                  {/* Distance from current location */}
+                  <CardItem translateZ={40} className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    📍 {city.distance} KM away
+                  </CardItem>
+
                   {/* City Image */}
                   <CardItem translateZ={100} className="w-full mt-4">
                     <img
@@ -122,7 +129,7 @@ export default function CitySelectionList() {
                             : "bg-black dark:bg-white dark:text-black text-white"
                         }`}
                     >
-                      {selectedCities.includes(city.id) ? "☑️ Selected" : "Select"}
+                      {selectedCities.includes(city.id) ? "Selected" : "Select"}
                     </CardItem>
                   </div>
                 </CardBody>
