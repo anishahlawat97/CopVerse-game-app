@@ -66,9 +66,9 @@ export default function ResultPage() {
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-background dark:bg-background px-6">
       {/* Background Patterns */}
       {resolvedTheme === "dark" ? (
-        <AnimatedGridPattern className={cn("[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]")} />
+        <AnimatedGridPattern className="absolute inset-0 opacity-50 z-0" />
       ) : (
-        <DotPattern className={cn("[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]")} />
+        <DotPattern className="absolute inset-0 opacity-50 z-0" />
       )}
 
       {/* Particles */}
@@ -77,19 +77,25 @@ export default function ResultPage() {
       {/* Border Beam */}
       <BorderBeam className="absolute inset-0" size={250} borderWidth={2} />
 
+      {/* Centered Background Lines */}
+      <BackgroundLines
+        className="absolute inset-0 flex items-center justify-center opacity-40 z-[-1]"
+        svgOptions={{ duration: 12 }}
+      />
+
       {/* Main Content */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="relative w-full max-w-lg text-center"
+        className="relative w-full max-w-lg text-center z-10"
       >
         {loading ? (
           <p className="text-lg animate-pulse">Loading results...</p>
         ) : result?.winners && result.winners.length > 0 ? (
           // Winner Case (Cop Caught Fugitive)
-          <BackgroundLines>
-            <div className="p-8 rounded-xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-300 dark:border-gray-700 relative overflow-hidden">
+          <div className="relative w-full">
+            <div className="p-8 rounded-xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-300 dark:border-gray-700 relative w-full">
               <SparklesText text="🚔 The Fugitive was Captured!" className="text-3xl font-bold text-emerald-500" />
               <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
                 {result.winners.length === 1 ? (
@@ -102,7 +108,7 @@ export default function ResultPage() {
                     {result.winners.map((cop, index) => (
                       <span key={index} className="font-semibold">
                         {cop.name}
-                        {index !== result.winners.length - 1 ? ", " : ""}
+                        {index !== (result.winners?.length ?? 0) - 1 ? ", " : ""}
                       </span>
                     ))}
                     !
@@ -130,18 +136,16 @@ export default function ResultPage() {
                 ))}
               </div>
             </div>
-          </BackgroundLines>
+          </div>
         ) : (
           // Loser Case (Fugitive Escaped)
-          <div className="p-8 rounded-xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-300 dark:border-gray-700 relative">
-            <p className="text-3xl font-bold text-red-500">
-              🚨 The Fugitive Escaped!
-            </p>
-            <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
-              The fugitive managed to escape! Better luck next time.
-            </p>
-            <div className="mt-6 flex items-center justify-center">
-              <Image src="/gifs/escaped.gif" alt="Fugitive Escaped" width={200} height={120} className="rounded-lg shadow-lg" />
+          <div className="relative w-full">
+            <div className="p-8 rounded-xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-300 dark:border-gray-700 relative w-full">
+              <p className="text-3xl font-bold text-red-500">🚨 The Fugitive Escaped!</p>
+              <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">The fugitive managed to escape! Better luck next time.</p>
+              <div className="mt-6 flex items-center justify-center">
+                <Image src="/gifs/escaped.gif" alt="Fugitive Escaped" width={200} height={120} className="rounded-lg shadow-lg" />
+              </div>
             </div>
           </div>
         )}
