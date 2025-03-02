@@ -165,9 +165,8 @@ export function VehicleSelectionList() {
         throw new Error("Failed to submit selection");
       }
 
-      setTimeout(() => {
-        router.push("/result");
-      }, 5000);
+      router.push("/result");
+
     } catch (error) {
       console.error("Submission error:", error);
       setSubmitting(false);

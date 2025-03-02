@@ -14,8 +14,12 @@ interface Vehicle {
 }
 
 interface ResultData {
-    success: boolean;
-    copName: string;
-    copImage: string;
-    convictLocation?: string;
-  }
+  success: boolean;
+  message: string;
+  winners: WinnerData[] | null;
+}
+
+interface WinnerData {
+  name: string;
+  cityId: string;
+}

@@ -68,7 +68,6 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80"></div>
       </div>
 
-      {/* Particle Effects */}
       <Particles className="absolute inset-0" quantity={300} color="#ffffff" />
 
       <Spotlight
@@ -83,7 +82,7 @@ export default function HeroSection() {
         xOffset={80}
       />
 
-      {/* 🚔 CopVerse Logo */}
+      {/* CopVerse Logo */}
       <Image
         src="/copverse-logo-2.png"
         alt="CopVerse Logo"
@@ -93,7 +92,7 @@ export default function HeroSection() {
         priority
       />
 
-      {/* 🚔 CopVerse: Capture the Fugitive! */}
+      {/* Heading */}
       <h1 className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-tight tracking-tighter">
         {theme === "dark" ? (
           <AuroraText>CopVerse</AuroraText>
@@ -107,13 +106,13 @@ export default function HeroSection() {
         </span>
       </h1>
 
-      {/* Subheading with Sparkles Effect */}
+      {/* Subheading */}
       <TextGenerateEffect
         words="A high-stakes chase across the city. Can you catch the fugitive before they disappear forever?"
-        className="mt-4 text-sm sm:text-lg md:text-xl text-foreground/70 dark:text-foreground/70"
+        className="mt-4 text-sm text-center md:text-xl text-foreground/70 dark:text-foreground/70"
       />
 
-      {/* Call to Action Button */}
+      {/* CTA Button */}
       <div className="mt-10 lg:mt-16">
         <HoverBorderGradient onClick={() => startGame()}>
         <span className="whitespace-pre-wrap text-sm sm:text-base md:text-lg lg:text-xl leading-none tracking-tight text-white">
