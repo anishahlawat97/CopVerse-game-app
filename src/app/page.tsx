@@ -1,101 +1,99 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Particles from "@/components/magicui/particles";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import Image from "next/image";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { Spotlight } from "@/components/ui/spotlight-new";
+
+export default function HomePage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const startGame = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/game/start", { method: "POST" });
+      const data = await res.json();
+
+      if (!data.success) {
+        console.error("Error starting game:", data.error);
+        setLoading(false);
+        return;
+      }
+
+      // Store gameSessionId in session storage
+      sessionStorage.setItem("gameSessionId", data.gameSessionId);
+
+      // Redirect to city selection
+      router.push("/city-selection");
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-background dark:bg-black text-foreground dark:text-white">
+      {/* Background Image - Light & Dark Mode */}
+      <div className="absolute inset-0 z-0">
         <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/backgrounds/cityscape-light.jpg"
+          alt="Cityscape Light Mode"
+          layout="fill"
+          objectFit="cover"
+          className="dark:hidden opacity-0"
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        <Image
+          src="/backgrounds/cityscape-dark.jpg"
+          alt="Cityscape Dark Mode"
+          layout="fill"
+          objectFit="cover"
+          className="hidden dark:block opacity-0"
+          priority
+        />
+        {/* Gradient Overlay for Better Readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80"></div>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {/* Particle Effects */}
+      <Particles className="absolute inset-0" quantity={300} color="#ffffff" />
+
+      <Spotlight
+        gradientFirst="radial-gradient(68.54% 68.72% at 55.02% 31.46%, hsla(220, 100%, 70%, .15) 0, hsla(220, 100%, 50%, .07) 50%, hsla(220, 100%, 40%, 0) 80%)"
+        gradientSecond="radial-gradient(50% 50% at 50% 50%, hsla(0, 100%, 70%, .12) 0, hsla(0, 100%, 50%, .05) 80%, transparent 100%)"
+        gradientThird="radial-gradient(50% 50% at 50% 50%, hsla(0, 100%, 65%, .1) 0, hsla(0, 100%, 45%, .04) 80%, transparent 100%)"
+        translateY={-250}
+        width={600}
+        height={1400}
+        smallWidth={260}
+        duration={5}
+        xOffset={80}
+      />
+
+      {/* Hero Heading */}
+      <h1 className="bg-gradient-to-br dark:from-white from-black from-30% dark:to-white/40 to-black/40 bg-clip-text py-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-tight tracking-tighter text-transparent sm:leading-none animate-fade-in opacity-0 [--animation-delay:200ms]">
+        🚔 CopVerse: Capture the Fugitive!
+      </h1>
+
+      {/* Subheading with Sparkles Effect */}
+      <TextGenerateEffect
+        words="A high-stakes chase across the city. Can you catch the fugitive before they disappear forever?"
+        className="mt-4 text-sm sm:text-lg md:text-xl text-foreground/70 dark:text-foreground/70 animate-fade-in opacity-0 [--animation-delay:300ms]"
+      />
+
+      {/* Call to Action Button */}
+      <div className="mt-8 animate-fade-in opacity-0 [--animation-delay:400ms]">
+        <HoverBorderGradient onClick={startGame}>
+          <span className="whitespace-pre-wrap text-sm sm:text-base md:text-lg lg:text-xl leading-none tracking-tight text-white">
+            {loading ? "Starting..." : "Start the Chase"}
+          </span>
+        </HoverBorderGradient>
+      </div>
     </div>
   );
 }
