@@ -229,7 +229,7 @@ export function VehicleSelectionList() {
                         )}
                       >
                         <Image
-                          src={vehicle.imageUrl || ""}
+                          src={vehicle.imageUrl || ''}
                           alt={vehicle.type}
                           fill
                           className="object-cover absolute inset-0"
