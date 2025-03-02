@@ -1,8 +1,8 @@
 interface City {
-  id: string;
-  name: string;
-  imageUrl?: string;
-  distance: number;
+  id: string
+  name: string
+  imageUrl?: string
+  distance: number
 }
 
 interface Vehicle {
@@ -14,12 +14,12 @@ interface Vehicle {
 }
 
 interface ResultData {
-  success: boolean;
-  message: string;
-  winners: WinnerData[] | null;
+  success: boolean
+  message: string
+  winners: WinnerData[] | null
 }
 
 interface WinnerData {
-  name: string;
-  cityId: string;
+  name: string
+  cityId: string
 }

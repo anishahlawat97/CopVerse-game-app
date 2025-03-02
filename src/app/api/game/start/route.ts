@@ -1,23 +1,20 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prismaClient";
-import { ObjectId } from "bson";
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prismaClient'
+import { ObjectId } from 'bson'
 
 export async function POST() {
   try {
-    console.log("Starting a new game session...");
+    console.log('Starting a new game session...')
 
     // Clear previous game session data
-    await prisma.cop.deleteMany();
-    await prisma.fugitive.deleteMany();
-    await prisma.gameSession.deleteMany();
+    await prisma.cop.deleteMany()
+    await prisma.fugitive.deleteMany()
+    await prisma.gameSession.deleteMany()
 
     // Get all available cities
-    const cities = await prisma.city.findMany();
+    const cities = await prisma.city.findMany()
     if (cities.length === 0) {
-      return NextResponse.json(
-        { success: false, error: "No cities available" },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'No cities available' }, { status: 400 })
     }
 
     // Create new game session (Prisma will auto-generate an ObjectId)
@@ -26,10 +23,10 @@ export async function POST() {
         fugitiveCityId: cities[Math.floor(Math.random() * cities.length)].id,
         createdAt: new Date(),
       },
-    });
+    })
 
     // Generate a valid MongoDB ObjectId manually
-    const gameSessionObjectId = new ObjectId(newGameSession.id);
+    const gameSessionObjectId = new ObjectId(newGameSession.id)
 
     // Assign fugitive to a random city within this game session
     const fugitive = await prisma.fugitive.create({
@@ -37,20 +34,17 @@ export async function POST() {
         cityId: newGameSession.fugitiveCityId,
         gameSessionId: gameSessionObjectId.toHexString(),
       },
-    });
+    })
 
-    console.log(`Fugitive placed in: ${fugitive.cityId}`);
+    console.log(`Fugitive placed in: ${fugitive.cityId}`)
     return NextResponse.json({
       success: true,
-      message: "Game started",
+      message: 'Game started',
       gameSessionId: newGameSession.id, // Return generated ObjectId
       fugitiveCity: fugitive.cityId,
-    });
+    })
   } catch (error) {
-    console.error("Error starting game:", error);
-    return NextResponse.json(
-      { success: false, error: "Something went wrong" },
-      { status: 500 }
-    );
+    console.error('Error starting game:', error)
+    return NextResponse.json({ success: false, error: 'Something went wrong' }, { status: 500 })
   }
 }

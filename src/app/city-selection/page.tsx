@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import CitySelectionList from "@/components/CitySelectionList";
+import CitySelectionList from '@/components/CitySelectionList'
 
 export default function CitySelection() {
-    return <CitySelectionList />;
+  return <CitySelectionList />
 }

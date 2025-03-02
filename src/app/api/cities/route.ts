@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prismaClient";
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prismaClient'
 
 export async function GET() {
   try {
-    const cities = await prisma.city.findMany();
+    const cities = await prisma.city.findMany()
 
     return NextResponse.json({
       success: true,
@@ -12,12 +12,9 @@ export async function GET() {
         name: city.name,
         distance: city.distance,
       })),
-    });
+    })
   } catch (error) {
-    console.error("Error fetching cities:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch cities" },
-      { status: 500 }
-    );
+    console.error('Error fetching cities:', error)
+    return NextResponse.json({ success: false, error: 'Failed to fetch cities' }, { status: 500 })
   }
 }

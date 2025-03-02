@@ -21,7 +21,9 @@ body {
   color: var(--foreground);
   background-color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 @layer utilities {
@@ -31,9 +33,18 @@ body {
 }
 
 @keyframes cityPulse {
-  0% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { opacity: 0.8; transform: scale(1); }
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
 }
 
 .cityscape {
@@ -60,4 +71,3 @@ body {
   animation: fade-in 0.8s ease-out forwards;
   opacity: 0; /* Ensures elements are invisible before animation starts */
 }
-
