@@ -70,7 +70,6 @@ export function VehicleSelectionList() {
   const getRecommendedVehicle = (cityId: string) => {
     const city = cities.find((c) => c.id === cityId);
     if (!city) return null;
-
     return vehicles.find((vehicle) => vehicle.range >= city.distance * 2);
   };
 
@@ -104,6 +103,16 @@ export function VehicleSelectionList() {
       return;
     }
 
+    // Restore count for previously selected vehicle (if any)
+    const previouslySelectedVehicle = selectedVehicles[cityId];
+    if (previouslySelectedVehicle) {
+      setVehicleUsage((prev) => ({
+        ...prev,
+        [previouslySelectedVehicle]: Math.max((prev[previouslySelectedVehicle] || 0) - 1, 0),
+      }));
+    }
+
+    // Update the selected vehicle and decrement count
     setSelectedVehicles((prev) => ({
       ...prev,
       [cityId]: vehicleId,
@@ -111,7 +120,7 @@ export function VehicleSelectionList() {
 
     setVehicleUsage((prev) => ({
       ...prev,
-      [vehicleId]: currentCount + 1,
+      [vehicleId]: (prev[vehicleId] || 0) + 1,
     }));
 
     toast({
@@ -175,7 +184,6 @@ export function VehicleSelectionList() {
 
   return (
     <div className="p-6 flex flex-col items-center justify-center min-h-screen text-center animate-fade-in">
-      {/* <BackgroundBeams /> */}
       <h2 className="text-4xl font-bold mb-8 animate-fade-in">Select Vehicles for Each Cop</h2>
 
       {loading ? (
@@ -211,9 +219,7 @@ export function VehicleSelectionList() {
                         onClick={() => handleSelect(index, vehicle.id)}
                         className={cn(
                           "relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 w-full transition-all duration-300 ease-out cursor-pointer rounded-xl shadow-lg",
-                          isSelected
-                            ? "border-4 border-emerald-500 scale-105"
-                            : "blur-sm hover:blur-none",
+                          isSelected ? "border-4 border-emerald-500 scale-105" : "blur-sm hover:blur-none",
                           isUnavailable || isInsufficientRange ? "opacity-50 cursor-not-allowed" : ""
                         )}
                       >
