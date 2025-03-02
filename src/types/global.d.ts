@@ -1,7 +1,7 @@
 interface City {
   id: string;
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   distance: number;
 }
 
@@ -10,7 +10,7 @@ interface Vehicle {
   type: string
   range: number
   count: number
-  imageUrl: string
+  imageUrl?: string
 }
 
 interface ResultData {
