@@ -42,12 +42,12 @@ export async function POST(req: Request) {
     const cities = await prisma.city.findMany({ where: { id: { in: cityIds } } });
     const vehicles = await prisma.vehicle.findMany({ where: { id: { in: vehicleIds } } });
 
-    if (cities.length !== cityIds.length || vehicles.length !== vehicleIds.length) {
-      return NextResponse.json(
-        { success: false, error: "Invalid city or vehicle selection" },
-        { status: 400 }
-      );
-    }
+    // if (cities.length !== cityIds.length || vehicles.length !== vehicleIds.length) {
+    //   return NextResponse.json(
+    //     { success: false, error: "Invalid city or vehicle selection" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Ensure no duplicate city selections
     if (new Set(cityIds).size !== cityIds.length) {
@@ -78,7 +78,8 @@ export async function POST(req: Request) {
 
       const vehicleUsageCount = await prisma.cop.count({ where: { vehicleId: vehicle.id } });
 
-      if (vehicleUsageCount >= vehicle.count) {
+      if (vehicleUsageCount > vehicle.count) {
+        console.log("Vehicle out of stock:", vehicle.type, vehicleUsageCount, vehicle.count);
         return NextResponse.json(
           { success: false, error: `Vehicle ${vehicle.type} is no longer available` },
           { status: 400 }

@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prismaClient";
 import { z } from "zod";
 import { ObjectId } from "bson";
 
-// Validation Schema
 const GameSessionSchema = z.object({
   gameSessionId: z.string().min(1, "Game session ID is required"),
 });
@@ -29,7 +28,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const sessionObjectId = new ObjectId(gameSessionId); // Convert to valid ObjectId
+    const sessionObjectId = new ObjectId(gameSessionId);
 
     console.log("Checking game result for session:", gameSessionId);
 
@@ -61,7 +60,7 @@ export async function POST(req: Request) {
       }));
     }
 
-    // **Only clear data related to this game session**
+    // Only clear data related to this game session
     await prisma.cop.deleteMany({ where: { gameSessionId: sessionObjectId.toHexString() } });
     await prisma.fugitive.deleteMany({ where: { gameSessionId: sessionObjectId.toHexString() } });
 

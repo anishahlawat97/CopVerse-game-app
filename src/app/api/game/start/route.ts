@@ -35,7 +35,7 @@ export async function POST() {
     const fugitive = await prisma.fugitive.create({
       data: {
         cityId: newGameSession.fugitiveCityId,
-        gameSessionId: gameSessionObjectId.toHexString(), // ✅ Store as valid MongoDB ObjectId
+        gameSessionId: gameSessionObjectId.toHexString(),
       },
     });
 
