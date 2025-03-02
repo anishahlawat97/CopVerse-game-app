@@ -7,6 +7,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import DotPattern from '@/components/magicui/dot-pattern'
 import { cn } from '@/app/utils/utils'
+import Image from 'next/image'
 
 interface City {
   id: string
@@ -118,7 +119,7 @@ export default function CitySelectionList() {
 
                   {/* City Image */}
                   <CardItem translateZ={100} className="w-full mt-4">
-                    <img
+                    <Image
                       src={city.imageUrl}
                       alt={city.name}
                       className="h-48 w-full object-cover rounded-xl group-hover/card:shadow-xl"

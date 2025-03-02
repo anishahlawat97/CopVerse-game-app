@@ -183,6 +183,7 @@ export function VehicleSelectionList() {
 
   return (
     <div className="p-6 flex flex-col items-center justify-center min-h-screen text-center animate-fade-in">
+      <BackgroundBeams />
       <h2 className="text-4xl font-bold mb-8 animate-fade-in">Select Vehicles for Each Cop</h2>
 
       {loading ? (
@@ -228,7 +229,7 @@ export function VehicleSelectionList() {
                         )}
                       >
                         <Image
-                          src={vehicle.imageUrl}
+                          src={vehicle.imageUrl || ""}
                           alt={vehicle.type}
                           fill
                           className="object-cover absolute inset-0"

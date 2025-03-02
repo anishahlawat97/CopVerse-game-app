@@ -1,7 +1,6 @@
 'use client'
 
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import AnimatedShinyText from '@/components/magicui/animated-shiny-text'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -12,7 +11,6 @@ const Navbar = () => {
         href="/"
         className="text-lg md:text-xl lg:text-2xl font-bold flex items-center space-x-2"
       >
-        {/* <AnimatedShinyText className="leading-none">CopVerse</AnimatedShinyText> */}
         <Image
           src="/copverse-logo-2.png"
           alt="CopVerse Logo"
