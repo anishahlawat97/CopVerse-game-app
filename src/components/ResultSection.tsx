@@ -78,10 +78,9 @@ export default function ResultPage() {
       <BorderBeam className="absolute inset-0" size={250} borderWidth={2} />
 
       {/* Centered Background Lines */}
-      <BackgroundLines
+      {result?.winners && result.winners.length > 0 && <BackgroundLines
         className="absolute inset-0 flex items-center justify-center opacity-40 z-[-1]"
-        svgOptions={{ duration: 12 }}
-      />
+        svgOptions={{ duration: 12 }} children={undefined} />}
 
       {/* Main Content */}
       <motion.div
