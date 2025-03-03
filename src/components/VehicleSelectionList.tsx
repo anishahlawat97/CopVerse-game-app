@@ -196,7 +196,7 @@ export function VehicleSelectionList() {
             const recommendedVehicle = getRecommendedVehicle(cityId)
 
             return (
-              <div key={cityId} className="mb-10">
+              <div key={cityId} className="vehicle-selection-section mb-10">
                 <h3 className="text-xl font-semibold mb-2">
                   Cop {index + 1} - {getCityName(cityId)}
                 </h3>
@@ -215,9 +215,10 @@ export function VehicleSelectionList() {
                     return (
                       <div
                         key={vehicle.id}
+                        data-testid={`vehicle-card-${vehicle.id}`}
                         onClick={() => handleSelect(index, vehicle.id)}
                         className={cn(
-                          'relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 w-full transition-all duration-300 ease-out cursor-pointer rounded-xl shadow-lg',
+                          'vehicle-card relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 w-full transition-all duration-300 ease-out cursor-pointer rounded-xl shadow-lg',
                           isSelected
                             ? 'border-4 border-emerald-500 scale-105'
                             : 'blur-sm hover:blur-none',
