@@ -21,6 +21,13 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".prettierrc"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".prettierrc",
+    "__tests__/pages"
+  ],
   "exclude": ["node_modules", "components/ui/**/*", "components/magicui/**/*"]
 }
