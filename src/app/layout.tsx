@@ -45,7 +45,7 @@ export default function RootLayout({
       <body className="antialiased">
         {' '}
         <Suspense fallback={<Ripple />}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <Navbar />
             {children}
           </ThemeProvider>

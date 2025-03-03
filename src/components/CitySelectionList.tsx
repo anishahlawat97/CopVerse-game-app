@@ -9,14 +9,11 @@ import DotPattern from '@/components/magicui/dot-pattern'
 import { cn } from '@/app/utils/utils'
 import Image from 'next/image'
 
-interface City {
-  id: string
-  name: string
-  imageUrl: string
-  distance: number // Added distance property
+interface CitySelectionListProps {
+  'data-testid'?: string
 }
 
-export default function CitySelectionList() {
+const CitySelectionList: React.FC<CitySelectionListProps> = ({ 'data-testid': testId }) => {
   const [cities, setCities] = useState<City[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedCities, setSelectedCities] = useState<string[]>([]) // Multiple city selection
@@ -79,7 +76,10 @@ export default function CitySelectionList() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-6">
+    <div
+      data-testid={testId}
+      className="flex flex-col items-center justify-center min-h-screen text-center p-6"
+    >
       {/* Background Dot Pattern */}
       <DotPattern
         glow={true}
@@ -120,7 +120,7 @@ export default function CitySelectionList() {
                   {/* City Image */}
                   <CardItem translateZ={100} className="w-full mt-4">
                     <Image
-                      src={city.imageUrl}
+                      src={city.imageUrl ?? ''}
                       alt={city.name}
                       width={200}
                       height={200}
@@ -169,3 +169,5 @@ export default function CitySelectionList() {
     </div>
   )
 }
+
+export default CitySelectionList

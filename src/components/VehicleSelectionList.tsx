@@ -8,7 +8,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
 
-export function VehicleSelectionList() {
+interface VehicleSelectionListProps {
+  'data-testid'?: string
+}
+
+const VehicleSelectionList: React.FC<VehicleSelectionListProps> = ({ 'data-testid': testId }) => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [cities, setCities] = useState<City[]>([])
   const [selectedCityIds, setSelectedCityIds] = useState<string[]>([])
@@ -181,13 +185,16 @@ export function VehicleSelectionList() {
   }
 
   return (
-    <div className="p-6 flex flex-col items-center justify-center min-h-screen text-center animate-fade-in">
+    <div
+      className="p-6 flex flex-col items-center justify-center min-h-screen text-center animate-fade-in"
+      data-testid={testId}
+    >
       <h2 className="text-4xl font-bold mb-8 animate-fade-in">Select Vehicles for Each Cop</h2>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(6)].map((_, i) => (
-            <Skeleton key={i} className="w-64 h-64" />
+            <Skeleton key={i} data-testid="skeleton-loader" className="w-64 h-64" />
           ))}
         </div>
       ) : (
@@ -260,3 +267,5 @@ export function VehicleSelectionList() {
     </div>
   )
 }
+
+export default VehicleSelectionList
