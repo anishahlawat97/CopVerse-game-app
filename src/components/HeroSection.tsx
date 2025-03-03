@@ -10,7 +10,11 @@ import { Spotlight } from '@/components/ui/spotlight-new'
 import { AuroraText } from '@/components/magicui/aurora-text'
 import { useTheme } from 'next-themes'
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  'data-testid'?: string
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ 'data-testid': testId }) => {
   const router = useRouter()
   const { resolvedTheme } = useTheme()
   const [theme, setTheme] = useState<string>()
@@ -45,7 +49,10 @@ export default function HeroSection() {
   }
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-background dark:bg-black text-foreground dark:text-white">
+    <div
+      className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-background dark:bg-black text-foreground dark:text-white"
+      data-testid={testId}
+    >
       {/* Background Image - Light & Dark Mode */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -123,3 +130,5 @@ export default function HeroSection() {
     </div>
   )
 }
+
+export default HeroSection
