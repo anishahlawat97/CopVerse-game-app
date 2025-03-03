@@ -45,8 +45,8 @@ export async function POST(req: Request) {
 
     // Check if vehicles are available and have sufficient range
     for (const cop of parsedData.data) {
-      const city = cities.find((c) => c.id === cop.cityId)
-      const vehicle = vehicles.find((v) => v.id === cop.vehicleId)
+      const city = cities.find((c: { id: string }) => c.id === cop.cityId)
+      const vehicle = vehicles.find((v: { id: string }) => v.id === cop.vehicleId)
 
       if (!city || !vehicle) {
         return NextResponse.json(

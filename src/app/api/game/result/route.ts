@@ -42,9 +42,9 @@ export async function POST(req: Request) {
 
     if (winningCops.length > 0) {
       resultMessage = `🚔 The fugitive was captured by ${winningCops
-        .map((c) => c.name)
+        .map((c: { name: string }) => c.name)
         .join(', ')}! 🎉`
-      winners = winningCops.map((c) => ({
+      winners = winningCops.map((c: { name: string; cityId: string }) => ({
         name: c.name,
         cityId: c.cityId,
       }))

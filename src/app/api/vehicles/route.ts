@@ -14,7 +14,10 @@ export async function GET() {
 
     // Convert vehicleUsage array to a map for quick lookup
     const vehicleUsageMap: Record<string, number> = vehicleUsage.reduce(
-      (acc, { vehicleId, _count }) => {
+      (
+        acc: { [x: string]: number },
+        { vehicleId, _count }: { vehicleId: string; _count: { vehicleId: number } },
+      ) => {
         acc[vehicleId] = _count.vehicleId
         return acc
       },
@@ -22,13 +25,15 @@ export async function GET() {
     )
 
     // Adjust available vehicle counts based on selections
-    const updatedVehicles = vehicles.map(({ id, type, range, count }) => ({
-      id,
-      type,
-      range,
-      count,
-      availableCount: Math.max(count - (vehicleUsageMap[id] || 0), 0),
-    }))
+    const updatedVehicles = vehicles.map(
+      ({ id, type, range, count }: { id: string; type: string; range: number; count: number }) => ({
+        id,
+        type,
+        range,
+        count,
+        availableCount: Math.max(count - (vehicleUsageMap[id] || 0), 0),
+      }),
+    )
 
     return NextResponse.json({ success: true, vehicles: updatedVehicles })
   } catch (error) {

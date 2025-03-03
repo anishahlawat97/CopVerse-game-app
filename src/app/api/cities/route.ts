@@ -7,10 +7,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      cities: cities.map(({ id, name, distance }) => ({
-        id,
-        name,
-        distance,
+      cities: cities.map((city: { id: string; name: string; distance: number }) => ({
+        id: city.id,
+        name: city.name,
+        distance: city.distance,
       })),
     })
   } catch (error) {
