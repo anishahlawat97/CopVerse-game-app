@@ -122,6 +122,8 @@ export default function CitySelectionList() {
                     <Image
                       src={city.imageUrl}
                       alt={city.name}
+                      width={200}
+                      height={200}
                       className="h-48 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                     />
                   </CardItem>

@@ -149,6 +149,7 @@ export default function ResultPage() {
                   width={140}
                   height={90}
                   className="rounded-lg shadow-lg"
+                  unoptimized
                 />
               </div>
             </motion.div>
@@ -187,6 +188,7 @@ export default function ResultPage() {
                   width={200}
                   height={120}
                   className="rounded-lg shadow-lg"
+                  unoptimized
                 />
               </div>
             </div>
