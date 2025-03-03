@@ -7,7 +7,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useRouter } from 'next/navigation'
 import Spinner from '@/components/ui/spinner'
-import { BackgroundBeams } from './ui/background-beam'
 
 export function VehicleSelectionList() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
@@ -183,7 +182,6 @@ export function VehicleSelectionList() {
 
   return (
     <div className="p-6 flex flex-col items-center justify-center min-h-screen text-center animate-fade-in">
-      <BackgroundBeams />
       <h2 className="text-4xl font-bold mb-8 animate-fade-in">Select Vehicles for Each Cop</h2>
 
       {loading ? (
@@ -198,7 +196,7 @@ export function VehicleSelectionList() {
             const recommendedVehicle = getRecommendedVehicle(cityId)
 
             return (
-              <div key={cityId} className="mb-10">
+              <div key={cityId} className="vehicle-selection-section mb-10">
                 <h3 className="text-xl font-semibold mb-2">
                   Cop {index + 1} - {getCityName(cityId)}
                 </h3>
@@ -217,9 +215,10 @@ export function VehicleSelectionList() {
                     return (
                       <div
                         key={vehicle.id}
+                        data-testid={`vehicle-card-${vehicle.id}`}
                         onClick={() => handleSelect(index, vehicle.id)}
                         className={cn(
-                          'relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 w-full transition-all duration-300 ease-out cursor-pointer rounded-xl shadow-lg',
+                          'vehicle-card relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-64 w-full transition-all duration-300 ease-out cursor-pointer rounded-xl shadow-lg',
                           isSelected
                             ? 'border-4 border-emerald-500 scale-105'
                             : 'blur-sm hover:blur-none',

@@ -7,7 +7,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      cities: cities.map((city: City) => ({
+      cities: cities.map((city: { id: string; name: string; distance: number }) => ({
         id: city.id,
         name: city.name,
         distance: city.distance,
@@ -15,6 +15,9 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Error fetching cities:', error)
-    return NextResponse.json({ success: false, error: 'Failed to fetch cities' }, { status: 500 })
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch cities. Please try again.' },
+      { status: 500 },
+    )
   }
 }
