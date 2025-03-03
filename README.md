@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CopVerse - Vehicle Selection Game
 
-## Getting Started
+## Overview
 
-First, run the development server:
+CopVerse is an interactive web-based game where players act as cops, selecting cities and appropriate vehicles for a pursuit. The game enforces realistic constraints on vehicle selection, ensuring only suitable vehicles can be chosen based on availability and range.
+
+## Features
+
+- **City Selection:** Users choose cities where the chase takes place.
+- **Vehicle Selection:** Players select vehicles for each cop based on distance and availability.
+- **Game Logic Enforcement:** Prevents invalid selections such as unavailable or insufficient-range vehicles.
+- **Interactive UI:** Smooth user experience with animations and real-time selection updates.
+- **Test Suite:** Automated unit and integration tests for UI using Jest and E2E test with Playwright.
+
+## Tech Stack
+
+- **Frontend:** Next.js 14, TypeScript, Tailwind CSS
+- **State Management:** React hooks
+- **Backend API:** Next.js API Routes
+- **Database:** Prisma with MongoDB (for future enhancements)
+- **Testing:** Jest, React Testing Library, Playwright
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/copverse.git
+   cd copverse
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:3000`.
+
+## Testing
+
+Run the test suite using:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run test # For Jest tests
+npx playwright test # For Playwright e2e tests
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Assumptions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Vehicle Selection Constraints**: Vehicles are selectable only if they are available and have sufficient range for a round trip. These constraints are enforced in the UI and backend.
+- **Session Management**: Selected cities and vehicles are stored in session storage. This assumes a simple game state that resets after navigation.
+- **Submission Process**: The API expects a payload containing the game session ID and selected vehicles for cops, and it returns success/failure responses.
+- **Game Flow**: The game follows a structured flow: selecting cities → choosing vehicles → submitting selections → viewing results.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Future Enhancements
 
-## Learn More
+- **User Authentication:** Persist user game progress and selections.
+- **Leaderboard System:** Track and display top-performing players.
+- **Enhanced Game Mechanics:** Introduce new challenges and constraints.
 
-To learn more about Next.js, take a look at the following resources:
+## Author
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Developed by Anish Ahlawat. Feel free to contribute and improve the project!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
