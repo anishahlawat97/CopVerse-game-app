@@ -1,4 +1,4 @@
-# CopVerse - Vehicle Selection Game
+# CopVerse - Capture the Fugitive!
 
 ## Overview
 
