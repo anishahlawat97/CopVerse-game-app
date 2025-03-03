@@ -12,27 +12,30 @@ export async function GET() {
       _count: { vehicleId: true },
     })
 
-    // Define the type of accumulator (vehicleUsageMap)
+    // Convert vehicleUsage array to a map for quick lookup
     const vehicleUsageMap: Record<string, number> = vehicleUsage.reduce(
-      (
-        acc: Record<string, number>,
-        usage: { vehicleId: string; _count: { vehicleId: number } },
-      ) => {
-        acc[usage.vehicleId] = usage._count.vehicleId
+      (acc, { vehicleId, _count }) => {
+        acc[vehicleId] = _count.vehicleId
         return acc
       },
-      {}, // Initial empty object
+      {} as Record<string, number>,
     )
 
     // Adjust available vehicle counts based on selections
-    const updatedVehicles = vehicles.map((vehicle: Vehicle) => ({
-      ...vehicle,
-      availableCount: Math.max(vehicle.count - (vehicleUsageMap[vehicle.id] || 0), 0),
+    const updatedVehicles = vehicles.map(({ id, type, range, count }) => ({
+      id,
+      type,
+      range,
+      count,
+      availableCount: Math.max(count - (vehicleUsageMap[id] || 0), 0),
     }))
 
     return NextResponse.json({ success: true, vehicles: updatedVehicles })
   } catch (error) {
     console.error('Error fetching vehicles:', error)
-    return NextResponse.json({ success: false, error: 'Failed to fetch vehicles' }, { status: 500 })
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch vehicles. Please try again.' },
+      { status: 500 },
+    )
   }
 }

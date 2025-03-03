@@ -9,39 +9,59 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL_2")  // Use your Supabase URL
 }
 
 model City {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
+  id       String  @id @default(uuid())  // Use UUID instead of ObjectId
+  name     String  @unique
   distance Int
+
+  // Relations
+  cops      Cop[]
+  fugitives Fugitive[]
 }
 
 model Vehicle {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    String @id @default(uuid())
   type  String
   range Int
   count Int
+
+  // Relations
+  cops Cop[]
 }
 
 model Cop {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  id            String @id @default(uuid())
   name          String
-  cityId        String  // Storing City ID manually (MongoDB does not support relations)
-  vehicleId     String  // Storing Vehicle ID manually
-  gameSessionId String  @db.ObjectId // Ensure it is an ObjectId to match GameSession.id
+  cityId        String
+  vehicleId     String
+  gameSessionId String
+
+  // Relations
+  city        City   @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  vehicle     Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  gameSession GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
 }
 
 model Fugitive {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  cityId        String // Storing City ID manually
-  gameSessionId String @db.ObjectId // Ensure it is an ObjectId to match GameSession.id
+  id            String @id @default(uuid())
+  cityId        String
+  gameSessionId String
+
+  // Relations
+  city        City   @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  gameSession GameSession @relation(fields: [gameSessionId], references: [id], onDelete: Cascade)
 }
 
 model GameSession {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  fugitiveCityId String   // Stores the city where the fugitive is
+  id             String   @id @default(uuid())
+  fugitiveCityId String
   createdAt      DateTime @default(now())
+
+  // Relations
+  fugitives Fugitive[]
+  cops      Cop[]
 }

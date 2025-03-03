@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prismaClient'
-import { ObjectId } from 'bson'
 
 export async function POST() {
   try {
@@ -17,7 +16,7 @@ export async function POST() {
       return NextResponse.json({ success: false, error: 'No cities available' }, { status: 400 })
     }
 
-    // Create new game session (Prisma will auto-generate an ObjectId)
+    // Create new game session
     const newGameSession = await prisma.gameSession.create({
       data: {
         fugitiveCityId: cities[Math.floor(Math.random() * cities.length)].id,
@@ -25,14 +24,11 @@ export async function POST() {
       },
     })
 
-    // Generate a valid MongoDB ObjectId manually
-    const gameSessionObjectId = new ObjectId(newGameSession.id)
-
     // Assign fugitive to a random city within this game session
     const fugitive = await prisma.fugitive.create({
       data: {
         cityId: newGameSession.fugitiveCityId,
-        gameSessionId: gameSessionObjectId.toHexString(),
+        gameSessionId: newGameSession.id,
       },
     })
 
@@ -40,7 +36,7 @@ export async function POST() {
     return NextResponse.json({
       success: true,
       message: 'Game started',
-      gameSessionId: newGameSession.id, // Return generated ObjectId
+      gameSessionId: newGameSession.id,
       fugitiveCity: fugitive.cityId,
     })
   } catch (error) {

@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prismaClient'
 import { z } from 'zod'
-import { ObjectId } from 'bson'
 
-// Validation Schema for selecting multiple cops at once
+// Validation Schema
 const CopSelectionSchema = z.array(
   z.object({
     copName: z.string().min(1, 'Cop name is required'),
@@ -30,23 +29,13 @@ export async function POST(req: Request) {
       )
     }
 
-    const sessionObjectId = new ObjectId(gameSessionId)
-
-    // Fetch all selected cities and vehicles
     const cityIds = parsedData.data.map((c) => c.cityId)
     const vehicleIds = parsedData.data.map((v) => v.vehicleId)
 
     const cities = await prisma.city.findMany({ where: { id: { in: cityIds } } })
     const vehicles = await prisma.vehicle.findMany({ where: { id: { in: vehicleIds } } })
 
-    // if (cities.length !== cityIds.length || vehicles.length !== vehicleIds.length) {
-    //   return NextResponse.json(
-    //     { success: false, error: "Invalid city or vehicle selection" },
-    //     { status: 400 }
-    //   );
-    // }
-
-    // Ensure no duplicate city selections
+    // Duplicate city selections check
     if (new Set(cityIds).size !== cityIds.length) {
       return NextResponse.json(
         { success: false, error: 'Each cop must select a different city' },
@@ -56,8 +45,8 @@ export async function POST(req: Request) {
 
     // Check if vehicles are available and have sufficient range
     for (const cop of parsedData.data) {
-      const city = cities.find((c: { id: string }) => c.id === cop.cityId)
-      const vehicle = vehicles.find((v: { id: string }) => v.id === cop.vehicleId)
+      const city = cities.find((c) => c.id === cop.cityId)
+      const vehicle = vehicles.find((v) => v.id === cop.vehicleId)
 
       if (!city || !vehicle) {
         return NextResponse.json(
@@ -68,14 +57,19 @@ export async function POST(req: Request) {
 
       if (vehicle.range < city.distance * 2) {
         return NextResponse.json(
-          { success: false, error: `Vehicle ${vehicle.type} has insufficient range for the trip` },
+          {
+            success: false,
+            error: `Vehicle ${vehicle.type} has insufficient range for the trip`,
+          },
           { status: 400 },
         )
       }
 
-      const vehicleUsageCount = await prisma.cop.count({ where: { vehicleId: vehicle.id } })
+      const vehicleUsageCount = await prisma.cop.count({
+        where: { vehicleId: vehicle.id },
+      })
 
-      if (vehicleUsageCount > vehicle.count) {
+      if (vehicleUsageCount >= vehicle.count) {
         console.log('Vehicle out of stock:', vehicle.type, vehicleUsageCount, vehicle.count)
         return NextResponse.json(
           { success: false, error: `Vehicle ${vehicle.type} is no longer available` },
@@ -84,7 +78,6 @@ export async function POST(req: Request) {
       }
     }
 
-    // Save all cops in one transaction
     const savedCops = await prisma.$transaction(
       parsedData.data.map((cop) =>
         prisma.cop.create({
@@ -92,7 +85,7 @@ export async function POST(req: Request) {
             name: cop.copName,
             cityId: cop.cityId,
             vehicleId: cop.vehicleId,
-            gameSessionId: sessionObjectId.toHexString(),
+            gameSessionId,
           },
         }),
       ),
